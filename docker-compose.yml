@@ -1,21 +1,17 @@
-version: "3.8"
+version: "2"
 services:
   web:
-    build: ./frontend
+    image: 918747151581.dkr.ecr.eu-central-1.amazonaws.com/docker-frontend-backend-db@sha256:6e4716010dabdc869f6f9a64d79db5eb1f696ed45f0b992be01e58878b3e1038
     depends_on:
       - api
     ports:
       - "3000:3000"
-    networks:
-      - network-backend
   api:
-    build: ./backend
+    image: 918747151581.dkr.ecr.eu-central-1.amazonaws.com/docker-frontend-backend-db:latest
     depends_on:
       - mongo
     ports:
       - "3001:3001"
-    networks: 
-     - network-backend
   
   mongo:
     image: mongo
@@ -28,11 +24,6 @@ services:
     # uncomment following lines to access db locally
     # ports:
     #   - 27017:27017
-    networks: 
-     - network-backend
-
-networks:
-  network-backend:
 
 volumes: 
   mongodb_data:

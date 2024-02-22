@@ -1,0 +1,67 @@
+{
+    "family": "meine-webapp",
+    "networkMode": "awsvpc",
+    "containerDefinitions": [
+      {
+        "name": "web",
+        "image": "918747151581.dkr.ecr.eu-central-1.amazonaws.com/docker-frontend-backend-db:latest",
+        "portMappings": [
+          {
+            "containerPort": 3000
+          }
+        ],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+              "awslogs-group": "/ecs/meine-webapp",
+              "awslogs-region": "eu-central-1",
+              "awslogs-stream-prefix": "web"
+            }
+          }
+      },
+      {
+        "name": "api",
+        "image": "918747151581.dkr.ecr.eu-central-1.amazonaws.com/docker-frontend-backend-db@sha256:6e4716010dabdc869f6f9a64d79db5eb1f696ed45f0b992be01e58878b3e1038",
+        "portMappings": [
+          {
+            "containerPort": 3001
+          }
+        ],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+              "awslogs-group": "/ecs/meine-webapp",
+              "awslogs-region": "eu-central-1",
+              "awslogs-stream-prefix": "api"
+            }
+          }
+      },
+      {
+        "name": "mongo",
+        "image": "mongo",
+        "essential": false,
+        "environment": [
+          {
+            "name": "MONGODB_INITDB_ROOT_USERNAME",
+            "value": "username"
+          },
+          {
+            "name": "MONGODB_INITDB_ROOT_PASSWORD",
+            "value": "password"
+          }
+        ],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+              "awslogs-group": "/ecs/meine-webapp",
+              "awslogs-region": "eu-central-1",
+              "awslogs-stream-prefix": "mongo"
+            }
+          }
+      }
+    ],
+    "requiresCompatibilities": ["FARGATE"],
+    "cpu": "512",
+    "memory": "1024",
+    "executionRoleArn": "arn:aws:iam::918747151581:role/ecsTaskExecutionRole"
+  }
